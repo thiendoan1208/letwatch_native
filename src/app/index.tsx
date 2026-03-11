@@ -3,10 +3,16 @@ import ggIcon from "@/assets/auth/google.png";
 import bg from "@/assets/auth/welcome-background.png";
 import ShareButton from "@/components/button/share.button";
 import { APP_COLOR } from "@/constant/app_color";
-import { Link } from "expo-router";
+import { Link, useRouter, Redirect } from "expo-router";
 import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
 
 function WelcomePage() {
+  const router = useRouter();
+
+  if (true) {
+    return <Redirect href={"/(auth)/signup"} />;
+  }
+
   return (
     <ImageBackground
       source={bg}
@@ -79,7 +85,7 @@ function WelcomePage() {
               pressStyle={styles.container_info_email_button_press}
               title="Start with your email"
               onPress={() => {
-                alert("In developing");
+                router.navigate("/(auth)/signup");
               }}
             />
           </View>
@@ -89,7 +95,7 @@ function WelcomePage() {
               Already have an account?
             </Text>
 
-            <Link href={"/"} style={styles.container_info_footer_link}>
+            <Link href={"/(auth)/signin"} style={styles.container_info_footer_link}>
               Sign in
             </Link>
           </View>
