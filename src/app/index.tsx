@@ -10,7 +10,7 @@ function WelcomePage() {
   const router = useRouter();
 
   if (true) {
-    return <Redirect href={"/(auth)/signup"} />;
+    return <Redirect href={"/(main)/home"} />;
   }
 
   return (
@@ -95,7 +95,10 @@ function WelcomePage() {
               Already have an account?
             </Text>
 
-            <Link href={"/(auth)/signin"} style={styles.container_info_footer_link}>
+            <Link
+              href={"/(auth)/signin"}
+              style={styles.container_info_footer_link}
+            >
               Sign in
             </Link>
           </View>
