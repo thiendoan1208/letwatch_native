@@ -16,4 +16,16 @@ interface Response {
   success: boolean;
 }
 
-export { FormSignIn, FormSignUp, Response };
+interface SignInResponse {
+  data: {
+    email: string;
+    id: number;
+    role: number;
+    username: string;
+  };
+  error: null | string;
+  message: string;
+  success: boolean;
+}
+
+export { FormSignIn, FormSignUp, Response, SignInResponse };

@@ -3,9 +3,11 @@ import ggIcon from "@/assets/auth/google.png";
 import ShareButton from "@/components/button/share.button";
 import { SignInSchema } from "@/config/validate_schema";
 import { APP_COLOR } from "@/constant/app_color";
+import { GetCurrentUser } from "@/context/user_context";
 import { signIn } from "@/services/auth_api";
 import { FormSignIn } from "@/types/user";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Link, useRouter } from "expo-router";
 import { Formik } from "formik";
 import { useState } from "react";
@@ -13,8 +15,11 @@ import { Image, StyleSheet, Text, TextInput, View } from "react-native";
 import Toast from "react-native-root-toast";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+// create a storage instance
+
 function SignInPage() {
   const router = useRouter();
+  const { setUser } = GetCurrentUser();
 
   const [focusedField, setFocusedField] = useState<"email" | "password" | null>(
     null,
@@ -26,16 +31,39 @@ function SignInPage() {
     try {
       const user = await signIn(value);
 
+      if (!user?.success) {
+        Toast.show(user.message || "Sign in failed", {
+          duration: Toast.durations.LONG,
+        });
+        return;
+      }
+
       Toast.show(user.message, {
         duration: Toast.durations.LONG,
       });
 
-      if (user?.success) {
-        router.navigate("/(main)/home");
+      try {
+        await AsyncStorage.setItem("user_token", "1234565");
+      } catch (storageError) {
+        console.log("AsyncStorage error:", storageError);
+        Toast.show("Unable to save login session", {
+          duration: Toast.durations.LONG,
+        });
+        return;
       }
+
+      setUser({
+        email: user.data.email,
+        username: user.data.username,
+      });
+
+      router.replace("/(main)/home");
     } catch (error) {
-      console.log(error);
-      Toast.show("ERROR", {
+      console.log("Sign in error:", error);
+      const message =
+        error instanceof Error ? error.message : "Something went wrong";
+
+      Toast.show(message, {
         duration: Toast.durations.LONG,
       });
     }

@@ -1,5 +1,5 @@
 import axios from "@/config/axios";
-import { FormSignIn, FormSignUp, Response } from "@/types/user";
+import { FormSignIn, FormSignUp, Response, SignInResponse } from "@/types/user";
 
 const signUp = async (form: FormSignUp): Promise<Response> => {
   try {
@@ -13,7 +13,7 @@ const signUp = async (form: FormSignUp): Promise<Response> => {
   }
 };
 
-const signIn = async (form: FormSignIn): Promise<Response> => {
+const signIn = async (form: FormSignIn): Promise<SignInResponse> => {
   try {
     const user = await axios.post(
       `${process.env.EXPO_PUBLIC_BACKEND_URL_ANDROID}/api/auth/sign-in`,
@@ -25,5 +25,4 @@ const signIn = async (form: FormSignIn): Promise<Response> => {
   }
 };
 
-
-export { signUp, signIn };
+export { signIn, signUp };

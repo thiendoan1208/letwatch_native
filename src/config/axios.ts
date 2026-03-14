@@ -1,8 +1,12 @@
 import axios from "axios";
+import { Platform } from "react-native";
 
 const instance = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_BACKEND_URL_ANDROID,
-  timeout: 1000,
+  baseURL:
+    Platform.OS === "ios"
+      ? process.env.EXPO_PUBLIC_BACKEND_URL_IOS
+      : process.env.EXPO_PUBLIC_BACKEND_URL_ANDROID,
+  timeout: 10000,
   headers: { "X-Custom-Header": "foobar" },
 });
 
